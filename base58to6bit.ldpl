@@ -1,0 +1,62 @@
+INCLUDE "join_list.ldpl"
+
+DATA:
+
+	string_in IS TEXT
+	string_in_list IS TEXT LIST
+	string_out_list IS TEXT LIST
+	string_out IS TEXT
+	letter IS TEXT
+	length IS NUMBER
+	i IS NUMBER
+	
+PROCEDURE:
+
+	SUB Convert
+		IF letter IS EQUAL TO "1" THEN
+			STORE "000001" IN letter
+		ELSE IF letter IS EQUAL TO "2" THEN
+			STORE "000002" IN letter
+		ELSE IF letter IS EQUAL TO "3" THEN
+			STORE "000003" IN letter
+		ELSE IF letter IS EQUAL TO "4" THEN
+			STORE "000004" IN letter
+		ELSE IF letter IS EQUAL TO "5" THEN
+			STORE "000005" IN letter
+		ELSE IF letter IS EQUAL TO "6" THEN
+			STORE "000006" IN letter
+		ELSE IF letter IS EQUAL TO "7" THEN
+			STORE "000007" IN letter
+		ELSE IF letter IS EQUAL TO "8" THEN
+			STORE "000008" IN letter
+		ELSE IF letter IS EQUAL TO "9" THEN
+			STORE "000009" IN letter
+		END IF
+		### ...
+
+		#PUSH letter TO string_out_list
+
+	END SUB
+
+	# MAIN
+	# argv:0 ist das erste Commandline-Argument
+	LOAD FILE argv:0 IN string_in
+	
+	# den Text-String in eine Liste speichern
+	SPLIT string_in BY "" IN string_in_list
+
+	GET LENGTH OF string_in_list IN length
+
+	FOR i FROM 0 TO length STEP 1 DO
+		# Die Subroutine zum Konvertieren mit dem
+		# jeweiligen Charakter aufrufen
+		STORE string_in_list:i IN letter
+		CALL Convert
+
+		PUSH letter TO string_out_list		
+		DISPLAY letter
+	REPEAT
+
+	LABEL ENDE
+	JOIN TEXT LIST string_out_list INTO string_out
+	WRITE string_out TO FILE "out"

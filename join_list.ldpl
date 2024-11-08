@@ -1,0 +1,16 @@
+PROCEDURE:
+
+SUB-PROCEDURE JoinTextList
+    # This function joins the contents of list_to_join into output_variable
+    PARAMETERS:
+        list_to_join IS TEXT LIST
+        output_variable IS TEXT
+    LOCAL DATA:
+        element IS TEXT
+    PROCEDURE:
+        STORE "" IN output_variable
+        FOR EACH element IN list_to_join DO
+            IN output_variable JOIN output_variable element
+        REPEAT
+END SUB-PROCEDURE
+CREATE STATEMENT "JOIN TEXT LIST $ INTO $" EXECUTING JoinTextList
